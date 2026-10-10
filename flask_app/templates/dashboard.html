@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mb-4">
+    <h2>Bienvenid@ {{ session['usuario_nombre'] }}</h2>
+</div>
+
+{% with messages = get_flashed_messages(category_filter=["dashboard_error"]) %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-danger">{{ message }}</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title mb-3">Todos los Peluches</h5>
+        <table class="table table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th>Peluche</th>
+                    <th>Descripción</th>
+                    <th>Donador</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if peluches %}
+                {% for peluche in peluches %}
+                <tr>
+                    <td class="fw-bold">{{ peluche.nombre }}</td>
+                    <td>{{ peluche.descripcion }}</td>
+                    <td>{{ peluche.creador_nombre }}</td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <a href="/peluches/ver/{{ peluche.id_peluche }}" class="btn btn-sm btn-link">Ver</a>
+
+                            {% if peluche.creador_id == session['usuario_id'] %}
+                            <a href="/peluches/editar/{{ peluche.id_peluche }}" class="btn btn-sm btn-link">Editar</a>
+                            <a href="/peluches/eliminar/{{ peluche.id_peluche }}"
+                                class="btn btn-sm btn-link text-danger">Borrar</a>
+                            {% else %}
+                            {% if peluche.adoptador_id %}
+                            <button class="btn btn-sm btn-secondary" disabled>ADOPTADO</button>
+                            {% else %}
+                            <form action="/peluches/adoptar/{{ peluche.id_peluche }}" method="POST" class="m-0">
+                                <button type="submit" class="btn btn-sm btn-outline-success">Adoptar</button>
+                            </form>
+                            {% endif %}
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-3">No hay peluches registrados.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

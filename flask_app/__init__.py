@@ -1,0 +1,17 @@
+import os
+from flask import Flask
+from flask_bcrypt import Bcrypt
+from dotenv import load_dotenv
+
+load_dotenv()
+
+app = Flask(__name__)
+app.secret_key = os.getenv("SECRET_KEY")
+
+bcrypt = Bcrypt(app)
+
+from flask_app.controllers.usuarios_controller import usuarios_bp
+from flask_app.controllers.peluches_controller import peluches_bp
+
+app.register_blueprint(usuarios_bp)
+app.register_blueprint(peluches_bp)

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header text-center">
+                <h3>Registro</h3>
+            </div>
+            <div class="card-body">
+                {% with messages = get_flashed_messages(category_filter=["registro"]) %}
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-danger">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                <form action="/procesar_registro" method="POST">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" name="nombre" id="nombre" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellido" class="form-label">Apellido</label>
+                        <input type="text" name="apellido" id="apellido" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">E-mail</label>
+                        <input type="email" name="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="contrasena" class="form-label">Contraseña</label>
+                        <input type="password" name="contrasena" id="contrasena" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmar_contrasena" class="form-label">Conf. Contraseña</label>
+                        <input type="password" name="confirmar_contrasena" id="confirmar_contrasena"
+                            class="form-control" required>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-outline-primary">Registrar</button>
+                    </div>
+                </form>
+                <div class="text-center mt-3">
+                    <p>¿Ya tienes cuenta? <a href="/">Inicia sesión</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
